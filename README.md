@@ -15,3 +15,5 @@ in Emacs.  The list is as follows:
      Special commands include: vim, less, watch etc.
   7. Use a global counter to number the shells as it will be overall good.
   8. Provide an API to get new shell using shutil (so that counter is set).
+  
+(Under progress)
