@@ -78,11 +78,14 @@
           (setq shell-bufs (cons (buffer-name buf) shell-bufs))))
     shell-bufs))
 
+;; TODO: Add helm based read for people using helm
 (defun shutil-switch-to-buffer ()
   "Use counsel to switch to a shell buffer."
   (interactive)
   (let (sh-buf)
-    (setq sh-buf (ivy-read "Switch to shell: " (shutil-get-shell-list)))
+    (if (require 'counsel nil 'noerror)
+        (setq sh-buf (ivy-read "Switch to shell: " (shutil-get-shell-list)))
+      (setq sh-buf (completing-read "Switch to shell: " (shutil-get-shell-list))))
     (switch-to-buffer (get-buffer sh-buf))))
 
 (defun shutil-shell-on-server (server)
