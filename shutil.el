@@ -46,6 +46,8 @@
 
 ;;; Code:
 
+(require 'comint)
+
 (defgroup shutil nil
   "Shell Utilities"
   :group 'shutil)
@@ -55,7 +57,7 @@
 
 ;; TODO - Make it to work with C-u bindings.
 (defun shutil-get-new-shell (name)
-  "Get a new shell."
+  "Get a new shell with NAME."
   (interactive "sEnter shell name: ")
   (let (sh-name)
     (if (or (equal name nil)
@@ -83,7 +85,7 @@
   "Use counsel to switch to a shell buffer."
   (interactive)
   (let (sh-buf)
-    (if (require 'counsel nil 'noerror)
+    (if (require 'ivy nil 'noerror)
         (setq sh-buf (ivy-read "Switch to shell: " (shutil-get-shell-list)))
       (setq sh-buf (completing-read "Switch to shell: " (shutil-get-shell-list))))
     (switch-to-buffer (get-buffer sh-buf))))
@@ -103,14 +105,14 @@
       (comint-send-input))))
 
 (defun shutil-split-vertically ()
-  "Split window and open a shell"
+  "Split window and open a shell."
   (interactive)
   (split-window-vertically)
   (other-window 1)
   (shutil-get-new-shell ""))
 
 (defun shutil-command-on-term (cmd)
-  "Fire some commands on term."
+  "Fire some command CMD on term."
   (interactive "sEnter command: ")
   (term "/bin/bash")
   (insert cmd)
