@@ -105,6 +105,17 @@
       (insert (concat "cd " curr-buf-dir))
       (comint-send-input))))
 
+(defun shutil-shell-on-server-list (server-list)
+  "Start a new shell on a server from provided SERVER-LIST."
+  (interactive)
+  (let (server)
+    (if (require 'ivy nil 'noerror)
+        (setq server (ivy-read "Switch to shell: " server-list))
+      (if (require 'helm nil 'noerror)
+          (setq server (helm-comp-read "Switch to shell: " server-list))
+        (setq server (completing-read "Switch to shell: " server-list)))
+      (shutil-shell-on-server server))))
+
 (defun shutil-split-vertically ()
   "Split window and open a shell."
   (interactive)
@@ -112,12 +123,14 @@
   (other-window 1)
   (shutil-get-new-shell ""))
 
+;; TODO
 (defun shutil-command-on-term (cmd)
   "Fire some command CMD on term."
   (interactive "sEnter command: ")
-  (term "/bin/bash")
-  (insert cmd)
-  (term-send-input))
+  (let (term-buf (generate-new-buffer "*term-test*"))
+    (with-current-buffer
+      (term-mode)
+      (term-exec term-buf "/bin/bash" "/bin/bash" nil '("ls -al")))))
 
 (provide 'shutil)
 
