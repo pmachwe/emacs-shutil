@@ -55,15 +55,16 @@
 (defvar shutil-shell-cnt 1
   "Global counter to number each shell.")
 
-;; TODO - Make it to work with C-u bindings.
-(defun shutil-get-new-shell (name)
-  "Get a new shell with NAME."
-  (interactive "sEnter shell name: ")
+(defun shutil-get-new-shell (&optional name)
+  "Get a new shell with NAME when prefix argument provided."
+  (interactive
+   (when current-prefix-arg
+     (list (read-string "Enter shell name: "))))
   (let (sh-name)
     (if (or (equal name nil)
             (string-empty-p name))
         (setq name "shell"))
-    (setq sh-name (concat (int-to-string shutil-shell-cnt) "--" name))
+    (setq sh-name (concat (int-to-string shutil-shell-cnt) " " name))
     (setq sh-name (concat "*" sh-name "*"))
     (shell sh-name)
     (setq shutil-shell-cnt (1+ shutil-shell-cnt))
