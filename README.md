@@ -15,5 +15,15 @@ in Emacs.  The list is as follows:
      Special commands include: vim, less, watch etc.
   7. Use a global counter to number the shells as it will be overall good.
   8. Provide an API to get new shell using shutil (so that counter is set).
-  
+
+
+An example of installation and usage:
+
+    (use-package shutil
+      :straight (shutil :type git :host github :repo "pmachwe/emacs-shutil")
+      :bind (("C-c s n" . shutil-get-new-shell)
+             ("C-c s b" . shutil-switch-to-buffer)
+             ("C-s s |" . shutil-split-vertically)))
+
+
 (Under progress)
